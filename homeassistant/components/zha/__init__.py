@@ -37,6 +37,7 @@ CONF_DEVICE_CONFIG = 'device_config'
 CONF_RADIO_TYPE = 'radio_type'
 CONF_USB_PATH = 'usb_path'
 DATA_DEVICE_CONFIG = 'zha_device_config'
+CONF_ZIGPY_AUTO_FORM_NETWORK = 'zigpy_auto_form_network'
 
 DEVICE_CONFIG_SCHEMA_ENTRY = vol.Schema({
     vol.Optional(ha_const.CONF_TYPE): cv.string,
@@ -50,6 +51,7 @@ CONFIG_SCHEMA = vol.Schema({
         CONF_DATABASE: cv.string,
         vol.Optional(CONF_DEVICE_CONFIG, default={}):
             vol.Schema({cv.string: DEVICE_CONFIG_SCHEMA_ENTRY}),
+        vol.Optional(CONF_ZIGPY_AUTO_FORM_NETWORK, default=True): cv.boolean,
     })
 }, extra=vol.ALLOW_EXTRA)
 
@@ -89,6 +91,7 @@ async def async_setup(hass, config):
     usb_path = config[DOMAIN].get(CONF_USB_PATH)
     baudrate = config[DOMAIN].get(CONF_BAUDRATE)
     radio_type = config[DOMAIN].get(CONF_RADIO_TYPE)
+    zigpy_auto_form_network = config[DOMAIN].get(CONF_ZIGPY_AUTO_FORM_NETWORK)
     if radio_type == RadioType.ezsp:
         import bellows.ezsp
         from bellows.zigbee.application import ControllerApplication
@@ -104,7 +107,7 @@ async def async_setup(hass, config):
     APPLICATION_CONTROLLER = ControllerApplication(radio, database)
     listener = ApplicationListener(hass, config)
     APPLICATION_CONTROLLER.add_listener(listener)
-    await APPLICATION_CONTROLLER.startup(auto_form=True)
+    await APPLICATION_CONTROLLER.startup(auto_form=zigpy_auto_form_network)
 
     for device in APPLICATION_CONTROLLER.devices.values():
         hass.async_add_job(listener.async_device_initialized(device, False))
