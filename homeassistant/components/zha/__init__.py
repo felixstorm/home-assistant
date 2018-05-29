@@ -278,9 +278,10 @@ class Entity(entity.Entity):
                 endpoint.endpoint_id,
                 kwargs.get('entity_suffix', ''),
             )
-            self._device_state_attributes['friendly_name'] = "{} {}".format(
+            self._device_state_attributes['friendly_name'] = "{} {} {}".format(
                 manufacturer,
                 model,
+                ieeetail,
             )
         else:
             self.entity_id = "{}.zha_{}_{}{}".format(
