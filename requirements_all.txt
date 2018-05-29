@@ -145,9 +145,6 @@ batinfo==0.4.2
 # homeassistant.components.sensor.sytadin
 beautifulsoup4==4.6.0
 
-# homeassistant.components.zha
-bellows==0.6.0
-
 # homeassistant.components.bmw_connected_drive
 bimmer_connected==0.5.1
 
@@ -342,6 +339,12 @@ gTTS-token==1.1.1
 
 # homeassistant.components.sensor.gearbest
 gearbest_parser==1.0.5
+
+# homeassistant.components.zha
+git+https://github.com/felixstorm/bellows.git#bellows==0.6.0.devfstorm0
+
+# homeassistant.components.zha
+git+https://github.com/felixstorm/zigpy.git#zigpy==0.1.0.devfstorm0
 
 # homeassistant.components.sensor.gitter
 gitterpy==0.1.6
@@ -1392,6 +1395,3 @@ ziggo-mediabox-xl==1.0.0
 
 # homeassistant.components.zha
 zigpy-xbee==0.1.0
-
-# homeassistant.components.zha
-zigpy==0.1.0
