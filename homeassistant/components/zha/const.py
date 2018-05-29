@@ -16,10 +16,10 @@ def populate_data():
 
     DEVICE_CLASS[zha.PROFILE_ID] = {
         zha.DeviceType.SMART_PLUG: 'switch',
-
         zha.DeviceType.ON_OFF_LIGHT: 'light',
         zha.DeviceType.DIMMABLE_LIGHT: 'light',
         zha.DeviceType.COLOR_DIMMABLE_LIGHT: 'light',
+        zha.DeviceType.WINDOW_COVERING_DEVICE: 'cover',
     }
     DEVICE_CLASS[zll.PROFILE_ID] = {
         zll.DeviceType.ON_OFF_LIGHT: 'light',
