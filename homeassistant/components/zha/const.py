@@ -27,6 +27,8 @@ def populate_data():
         zha.DeviceType.ON_OFF_LIGHT_SWITCH: 'binary_sensor',
         zha.DeviceType.DIMMER_SWITCH: 'binary_sensor',
         zha.DeviceType.COLOR_DIMMER_SWITCH: 'binary_sensor',
+
+        zha.DeviceType.WINDOW_COVERING_DEVICE: 'cover',
     }
     DEVICE_CLASS[zll.PROFILE_ID] = {
         zll.DeviceType.ON_OFF_LIGHT: 'light',
