@@ -57,9 +57,11 @@ CONFIG_SCHEMA = vol.Schema({
 
 ATTR_DURATION = 'duration'
 ATTR_IEEE = 'ieee_address'
+ATTR_NWK = 'nwk_address'
 
 SERVICE_PERMIT = 'permit'
 SERVICE_REMOVE = 'remove'
+SERVICE_ADD_EXISTING = 'add_existing'
 SERVICE_SCHEMAS = {
     SERVICE_PERMIT: vol.Schema({
         vol.Optional(ATTR_DURATION, default=60):
@@ -67,6 +69,10 @@ SERVICE_SCHEMAS = {
     }),
     SERVICE_REMOVE: vol.Schema({
         vol.Required(ATTR_IEEE): cv.string,
+    }),
+    SERVICE_ADD_EXISTING: vol.Schema({
+        vol.Required(ATTR_IEEE): cv.string,
+        vol.Required(ATTR_NWK): cv.string,
     }),
 }
 
@@ -131,6 +137,22 @@ async def async_setup(hass, config):
 
     hass.services.async_register(DOMAIN, SERVICE_REMOVE, remove,
                                  schema=SERVICE_SCHEMAS[SERVICE_REMOVE])
+
+    async def add_existing(service):
+        """Add an existing node from the network to the internal database."""
+        from bellows.types import EmberEUI64, uint8_t
+        ieee = service.data.get(ATTR_IEEE)
+        ieee = EmberEUI64([uint8_t(p, base=16) for p in ieee.split(':')])
+        nwk = service.data.get(ATTR_NWK)
+        if nwk[:2].lower() == '0x':
+            nwk = int(nwk[2:], 16)
+        else:
+            nwk = int(nwk, 10)
+        _LOGGER.info("Adding node %s (nwk 0x%02x / %s)", ieee, nwk, nwk)
+        await APPLICATION_CONTROLLER.add_update_device_from_network(nwk, ieee)
+
+    hass.services.async_register(DOMAIN, SERVICE_ADD_EXISTING, add_existing,
+                                 schema=SERVICE_SCHEMAS[SERVICE_ADD_EXISTING])
 
     return True
 

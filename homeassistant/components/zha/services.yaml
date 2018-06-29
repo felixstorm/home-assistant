@@ -13,3 +13,13 @@ remove:
     ieee_address:
       description: IEEE address of the node to remove
       example: "00:0d:6f:00:05:7d:2d:34"
+
+add_existing:
+  description: Add an existing node from the network to the internal database.
+  fields:
+    ieee_address:
+      description: IEEE address of the node to add
+      example: "00:0d:6f:00:05:7d:2d:34"
+    nwk_address:
+      description: Network address of the node to add
+      example: "0xbeef or 42815"
